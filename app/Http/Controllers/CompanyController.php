@@ -40,7 +40,5 @@ class CompanyController extends Controller
                 'message' => 'Información no encontrada.'                
             ], 404);//Not found            
         }
-    }
-
-    
+    }    
 }
