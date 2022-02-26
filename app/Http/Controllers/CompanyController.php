@@ -12,6 +12,7 @@ use App\Http\Requests\CompanyRequest;
 class CompanyController extends Controller
 {
     public function store(CompanyRequest $request){
+        //aqui
         try {
             $company = Company::create([
                 'description' => $request->description,
@@ -28,17 +29,40 @@ class CompanyController extends Controller
         }
     }
 
-    //funcion para mostrar
-    public function show(Request $request){
-        $company = Company::where('id', $request->id)->first();
-        if($company){
-            return response()->json([
-                'data' => $company
-            ], 200);//OK
-        }else{
-            return response()->json([
-                'message' => 'Información no encontrada.'                
-            ], 404);//Not found            
-        }
-    }    
+    //funcion para mostrar un registro
+    public function show(Company $company){
+        return response()->json([            
+            'company' => $company
+        ], 200);//OK
+    }
+
+    //mostrar todos los registros
+    public function index(){
+        $companies = Company::get();
+        return response()->json([            
+            'companies' => $companies
+        ], 200);//OK
+    }
+
+    //actualizar un registro
+    public function update(CompanyRequest $request, Company $company){
+        //$company = updateOrCreate([]);
+        $company->update([
+            'description' => $request->description,
+            'country' => $request->country
+        ]);
+        return response()->json([
+            'message' => 'Registro actualizado.',
+            'company' => $company
+        ], 200);//OK
+    }
+
+    public function destroy(Company $company){
+        //$company = Company::find($company);
+        $company->delete();
+        return response()->json([
+            'message' => 'Registro eliminado.'
+        ], 200);//OK
+    }
+
 }

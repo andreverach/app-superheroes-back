@@ -35,13 +35,14 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            //return 'Hola reportable';
         });
 
-        /*  $this->renderable(function (Throwable $e, $request) {
-           return response()->json([
+        /* $this->renderable(function (Throwable $e, $request) {
+              return 'Hola renderable';
+            return response()->json([
                'message' => 'Algo mal Renderable'
            ], 404);
-        });  */
+        });   */
     }
 }
