@@ -19,7 +19,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return new CompanyCollection(Company::get());
+        return new CompanyCollection(Company::paginate(10));
         //return  Company::get();
     }
 

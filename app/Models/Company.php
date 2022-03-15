@@ -18,5 +18,10 @@ class Company extends Model
     ];
 
     public $timestamps = false;
-       
+
+    //relaciones
+
+    public function heroes(){//una compañia tiene muchos heroes
+        return $this->hasMany(Hero::class);
+    }
 }

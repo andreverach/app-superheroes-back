@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\v1\HeroController as HeroV1;
+
 //Ruta::metodo('mi-url', [Controlador, 'funcion-del-controlador']);
 Route::post('companies', [App\Http\Controllers\CompanyController::class, 'store']);
 
@@ -22,3 +24,6 @@ Route::delete('companies/{company}', [App\Http\Controllers\CompanyController::cl
 //nuevas rutas
 //companies
 Route::apiResource('v1/companies', App\Http\Controllers\Api\v1\CompanyController::class);
+
+//heroes
+Route::apiResource('v1/heroes', HeroV1::class);
