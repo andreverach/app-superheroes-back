@@ -5,6 +5,12 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+//exceptions to handle
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -34,15 +40,23 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //return 'Hola reportable';
+        $this->renderable(function (Throwable $e, $request) {
+            //para que solamente retorne respuesta json cuando la url es de apo tiene el segmento api
+            if ($request->is('api/*')) {//wantsJson - expectsJson
+                if ($e instanceof NotFoundHttpException) {
+                    return response()->json([
+                        'message' => 'Información no encontrada - NotFoundHttpException'
+                    ], 404);
+                }elseif($e instanceof QueryException){
+                    return response()->json([
+                        'message' => 'Consulta no permitida. - QueryException'
+                    ], 500);
+                }elseif($e instanceof MethodNotAllowedHttpException){
+                    return response()->json([
+                        'message' => 'Acción no permitida. - MethodNotAllowedHttpException'
+                    ], 405);
+                }
+            }            
         });
-
-        /* $this->renderable(function (Throwable $e, $request) {
-              return 'Hola renderable';
-            return response()->json([
-               'message' => 'Algo mal Renderable'
-           ], 404);
-        });   */
     }
 }
