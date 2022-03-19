@@ -17,7 +17,8 @@ class HeroResource extends JsonResource
             'company' => [
                 'description' => $this->company->description,
                 'country' => $this->company->country                
-            ]
+            ],
+            'stats' => $this->stats
         ];
     }
 }

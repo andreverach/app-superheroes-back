@@ -23,5 +23,10 @@ class Hero extends Model
     public function company(){//1 o más heroes pertenece a 1 compañia
         return $this->belongsTo(Company::class);
     }
+
+    public function stats(){
+        return $this->belongsToMany(Stat::class)
+                    ->withPivot('level');
+    }
     
 }
