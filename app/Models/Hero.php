@@ -28,5 +28,9 @@ class Hero extends Model
         return $this->belongsToMany(Stat::class)
                     ->withPivot('level');
     }
+
+    public function skills(){
+        return $this->belongsToMany(Skill::class);
+    }
     
 }

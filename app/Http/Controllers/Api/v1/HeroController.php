@@ -30,6 +30,11 @@ class HeroController extends Controller
                 'nation' => $request->nation
             ]);
             //formateamos los stats con sus levels, que vienen en el mismo orden
+
+            if($request->skills){
+                $hero->skills()->attach($request->skills);
+            }
+
             if($request->stats){
                 $array_stats = array();
                 foreach($request->stats as $index => $item){
@@ -67,7 +72,8 @@ class HeroController extends Controller
                 'actor_name' => $request->actor_name,
                 'nation' => $request->nation,
                 'company_id' => $request->company_id,
-            ]);    
+            ]);
+            $hero->skills()->sync($request->skills);
             if($request->stats){
                 $array_stats = array();
                 foreach($request->stats as $index => $item){
@@ -93,6 +99,7 @@ class HeroController extends Controller
         DB::beginTransaction();
         try {
             $hero->stats()->sync([]);//elimino stats
+            $hero->skills()->sync([]);//elimino stats
             $hero->delete();
             DB::commit();
             return response()->json([
