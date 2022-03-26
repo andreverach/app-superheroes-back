@@ -10,7 +10,8 @@ use App\Http\Resources\v1\HeroResource;
 use App\Http\Resources\v1\HeroCollection;
 //uso de transacciones
 use Illuminate\Support\Facades\DB;
-
+//storage
+use Illuminate\Support\Facades\Storage;
 class HeroController extends Controller
 {  
     public function index()
@@ -29,12 +30,28 @@ class HeroController extends Controller
                 'actor_name' => $request->actor_name,
                 'nation' => $request->nation
             ]);
-            //formateamos los stats con sus levels, que vienen en el mismo orden
 
+            //manejar imagenes
+            if($request->file('image')){
+                //aqui vamos a manejar la imagen
+                $url = $this->preload($request->file('image'))[0];
+                $from = str_replace('storage', 'public', $url);
+
+                $to = str_replace('preloads', 'heroes/'.$hero->id, $from);
+                Storage::move($from, $to);
+                $url = str_replace('public', 'storage', $to);
+
+                $hero->fill([
+                    'image' => $url 
+                ]);
+                $hero->save();
+            }
+
+            //skills            
             if($request->skills){
                 $hero->skills()->attach($request->skills);
             }
-
+            //formato para stats
             if($request->stats){
                 $array_stats = array();
                 foreach($request->stats as $index => $item){
@@ -74,6 +91,9 @@ class HeroController extends Controller
                 'company_id' => $request->company_id,
             ]);
             $hero->skills()->sync($request->skills);
+
+            
+
             if($request->stats){
                 $array_stats = array();
                 foreach($request->stats as $index => $item){
@@ -112,4 +132,21 @@ class HeroController extends Controller
             ], 404);
         }        
     }
+
+    private function preload($files){
+        try {
+            $array = array();
+            if(count($files) > 0){
+                foreach($files as $file){
+                    $imagen = $file->store('public/preloads');//guardando
+                    $url = Storage::url($imagen);//obtengo donde lo guarde
+                    array_push($array, $url);
+                }
+            }
+            return $array;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
+
 }

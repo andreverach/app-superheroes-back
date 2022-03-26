@@ -40,9 +40,9 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (Throwable $e, $request) {
+        $this->renderable(function (Throwable $e, $request){
             //para que solamente retorne respuesta json cuando la url es de apo tiene el segmento api
-            if ($request->is('api/*')) {//wantsJson - expectsJson
+            if ($request->is('api/*')){//wantsJson - expectsJson
                 if ($e instanceof NotFoundHttpException) {
                     return response()->json([
                         'message' => 'Información no encontrada - NotFoundHttpException'
@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
                         'message' => 'Acción no permitida. - MethodNotAllowedHttpException'
                     ], 405);
                 }
-            }            
+            }
         });
     }
 }
