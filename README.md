@@ -7,8 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## QuSoft Perú
-
+## Aplicación de entrenamiento - Superheroes / para la comunidad de Qusoft
 ## Steps
 
 1. Clonar el repositorio en un servidor local con versión de php 8+
