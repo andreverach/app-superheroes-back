@@ -24,11 +24,17 @@ Route::delete('companies/{company}', [App\Http\Controllers\CompanyController::cl
 
 
 //nuevas rutas
+
+//autenticacion
+Route::post('register', [App\Http\Controllers\Api\AuthController::class, 'create']);
+Route::post('login', [App\Http\Controllers\Api\LoginController::class, 'login']);
+
 //companies
 Route::apiResource('v1/companies', App\Http\Controllers\Api\v1\CompanyController::class);
 
 //heroes
-Route::apiResource('v1/heroes', HeroV1::class);
+Route::apiResource('v1/heroes', HeroV1::class)
+  ->middleware('auth:sanctum'); 
 
 //stats
 Route::apiResource('v1/stats', StatV1::class);
